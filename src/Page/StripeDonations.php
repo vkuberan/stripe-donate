@@ -10,11 +10,6 @@ namespace VeeKay\StripeDonate\Page;
  */
 class StripeDonations extends AbstractPage implements PageInterface {
 
-	/**
-	 * SqlImport constructor.
-	 *
-	 * @param Database\Importer $dbi
-	 */
 	public function __construct() {
 	}
 
@@ -22,7 +17,6 @@ class StripeDonations extends AbstractPage implements PageInterface {
 	 * @return string
 	 */
 	public function get_page_title() {
-
 		return esc_html__( 'All Donations', 'stripe-donate' );
 	}
 
@@ -30,7 +24,6 @@ class StripeDonations extends AbstractPage implements PageInterface {
 	 * @return string
 	 */
 	public function get_menu_title() {
-
 		return esc_html__( 'All Donations', 'stripe-donate' );
 	}
 
@@ -40,7 +33,6 @@ class StripeDonations extends AbstractPage implements PageInterface {
 	 * @return string
 	 */
 	public function get_slug() {
-
 		return 'stripe-all-donations';
 	}
 
@@ -48,7 +40,6 @@ class StripeDonations extends AbstractPage implements PageInterface {
 	 * Callback function for menu item
 	 */
 	public function render() {
-
 		require_once dirname(__DIR__) . '/templates/all-donations.php';
 	}
 
@@ -63,7 +54,7 @@ class StripeDonations extends AbstractPage implements PageInterface {
 	 * {@inheritdoc}
 	 */
 	public function save() {
-	
-    }
+    
+  }
 
 }
