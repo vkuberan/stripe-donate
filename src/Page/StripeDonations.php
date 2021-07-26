@@ -5,7 +5,6 @@ namespace VeeKay\StripeDonate\Page;
 
 /**
  * Class StripeSettings
- *
  * @package VeeKay\StripeDonate\Page
  */
 class StripeDonations extends AbstractPage implements PageInterface {
