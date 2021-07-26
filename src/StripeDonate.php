@@ -6,11 +6,11 @@ declare(strict_types=1);
 
 namespace VeeKay\StripeDonate;
 
-// use Inpsyde\GoogleTagManager\App\BootableProvider;
-// use Inpsyde\GoogleTagManager\App\Provider;
+use VeeKay\StripeDonate\App\BootableProvider;
+use VeeKay\StripeDonate\App\Provider;
 // use Inpsyde\GoogleTagManager\Event\BootstrapEvent;
-// use Inpsyde\GoogleTagManager\Exception\AlreadyBootedException;
-// use Inpsyde\GoogleTagManager\Exception\NotFoundException;
+use VeeKay\StripeDonate\Exception\AlreadyBootedException;
+use VeeKay\StripeDonate\Exception\NotFoundException;
 use Psr\Container\ContainerInterface;
 
 // phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
