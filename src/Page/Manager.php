@@ -14,6 +14,34 @@ class Manager {
 	 */
 	private $pages = [];
 
+
+	public function __construct() {
+		add_action( 'admin_menu', [$this, 'add_new_menu'] );
+	}
+
+	/**
+	 * Add a whole new menu for this plugin.
+	 */
+	public function add_new_menu() {
+		add_menu_page(
+			'Stripe Donate', 
+			'Stripe Donate', 
+			'manage_options', 
+			'stripe-donate', 
+			[$this, 'display_page'],
+			'dashicons-admin-page',
+			10
+		);
+	}
+
+	public function display_page() {
+
+		if ( !current_user_can( 'manage_options' ) )  {
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		}
+		require_once dirname(__DIR__) . '/templates/credits.php';
+
+	}
 	/**
 	 * Add page.
 	 *

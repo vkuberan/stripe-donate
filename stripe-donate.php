@@ -12,7 +12,8 @@
  * https://github.com/inpsyde/google-tag-manager/
  */
 
-use VeeKay\StripeDonate\Database;
+define( 'STRIPE_DONATE_BASEDIR', plugin_dir_url( __FILE__ ) );
+
 use VeeKay\StripeDonate\Page;
 
 // Make sure we don't expose any info if called directly
@@ -66,8 +67,6 @@ add_action('plugins_loaded', 'initialize');
 function initialize()
 {
     load_plugin_textdomain('stripe-donate');
-
-    define( 'STRIPE_DONATE_BASEDIR', plugin_dir_url( __FILE__ ) );
     
 	$file     = __DIR__ . '/vendor/autoload.php';
 

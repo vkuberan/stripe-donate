@@ -77,7 +77,6 @@ abstract class AbstractPage {
 			esc_attr( $this->get_slug() )
 		);
 		submit_button( $this->get_submit_button_title(), 'primary', $name );
-		wp_nonce_field( 'stripe_donate_domain', 'insr_nonce' );
 	}
 
 	/**

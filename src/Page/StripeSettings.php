@@ -56,100 +56,21 @@ class StripeSettings extends AbstractPage implements PageInterface {
 	 * {@inheritdoc}
 	 */
 	public function save() {
-
-		// @ToDo: Better handling of large files
-		// maybe like here: http://stackoverflow.com/questions/147821/loading-sql-files-from-within-php , answer by user 'gromo'
-		$php_upload_error_code = $_FILES[ 'file_to_upload' ][ 'error' ];
-		if ( 0 === $php_upload_error_code ) {
-			// get file extension
-			$ext = strrchr( $_FILES [ 'file_to_upload' ][ 'name' ], '.' );
-			// parse file
-			$tempfile = $_FILES [ 'file_to_upload' ][ 'tmp_name' ];
-			switch ( $ext ) {
-				case '.sql':
-					// @codingStandardsIgnoreLine
-					$sql_source = file_get_contents( $tempfile );
-					break;
-				case '.gz':
-					$sql_source = $this->read_gzfile_into_string( $tempfile );
-					break;
-				default:
-					$this->add_error(
-						esc_html__(
-							'The file has neither \'.gz\' nor \'.sql\' Extension. Import not possible.',
-							'search-and-replace'
-						)
-					);
-					return;
-			}
-
-			// call import function
-			$success = $this->dbi->import_sql( $sql_source );
-			if ( - 1 === $success ) {
-				$this->add_error(
-					esc_html__(
-						'The file does not seem to be a valid SQL file. Import not possible.',
-						'search-and-replace'
-					)
-				);
-			} else {
-				echo '<div class="updated notice is-dismissible">';
-				echo '<p>';
-				printf(
-				// Translators: %s print the sql source.
-					esc_html__(
-						'The SQL file was successfully imported. %s SQL queries were performed.',
-						'search-and-replace'
-					),
-					esc_html($success)
-				);
-				echo '</p></div>';
-			}
-		} else {
-			// show error
-			$php_upload_errors = array(
-				0 => esc_html__(
-					'There is no error, the file uploaded with success',
-					'search-and-replace'
-				),
-				1 => esc_html__(
-					'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-					'search-and-replace'
-				),
-				2 => esc_html__(
-					'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-					'search-and-replace'
-				),
-				3 => esc_html__(
-					'The uploaded file was only partially uploaded',
-					'search-and-replace'
-				),
-				4 => esc_html__(
-					'No file was uploaded.',
-					'search-and-replace'
-				),
-				6 => esc_html__(
-					'Missing a temporary folder.',
-					'search-and-replace'
-				),
-				7 => esc_html__(
-					'Failed to write file to disk.',
-					'search-and-replace' ),
-				8 => esc_html__(
-					'A PHP extension stopped the file upload.',
-					'search-and-replace'
-				),
-			);
-
-			$this->add_error(
-				sprintf(
-					// Translators: %s print the error message.
-					esc_html__( 'Upload Error: %s', 'search-and-replace' ),
-					$php_upload_errors[ $php_upload_error_code ]
-				)
-			);
+		if ( ! wp_verify_nonce( $_POST[ $this->nonce_name ], $this->nonce_action ) ) {
+			wp_die( 'Cheating Uh?' );
 		}
 
+		$is_test         = esc_url_raw( filter_input( INPUT_POST, 'test_stripe' ) );
+		$test_pub_key    = esc_url_raw( filter_input( INPUT_POST, 'test_publishable_key' ) );
+		$test_secret_key = esc_attr( filter_input( INPUT_POST, 'test_secret_key' ) );
+		$live_pub_key    = esc_url_raw( filter_input( INPUT_POST, 'live_publishable_key' ) );
+		$live_secret_key = esc_attr( filter_input( INPUT_POST, 'live_secret_key' ) );
+
+		print($is_test . '<br />');
+		print($test_pub_key . '<br />');
+		print($test_secret_key . '<br />');
+		print($live_pub_key . '<br />');
+		print($live_secret_key . '<br />');
 	}
 
 }
