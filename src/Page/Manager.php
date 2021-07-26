@@ -12,7 +12,7 @@ class Manager {
 
 	/**
 	 * @var PageInterface[]
-   * 
+         * 
 	 */
 	private $pages = [];
 
