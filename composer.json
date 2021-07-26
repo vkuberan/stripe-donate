@@ -2,7 +2,7 @@
     "name": "vkuberan/stripe-donate",
     "description": "A Simple Wordpress donation plugin using Stripe as its payment processor.",
     "type": "wordpress-plugin",
-    "license": "GNU",
+    "license": "GNU General Public License v3.0",
     "authors": [
         {
             "name": "Velmurugan Kuberan",
