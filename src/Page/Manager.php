@@ -40,7 +40,7 @@ class Manager {
 
 	}
 
-  /**
+        /**
 	 * Add page.
 	 *
 	 * @param PageInterface $page
