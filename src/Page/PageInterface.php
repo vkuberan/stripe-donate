@@ -1,9 +1,10 @@
 <?php
 
+// Interface which will be used by all page classes
 namespace VeeKay\StripeDonate\Page;
 
 /**
- * Interface PageInterface
+ * Interface PageInterface 
  *
  * @package VeeKay\StripeDonate\Page
  */
