@@ -12,8 +12,6 @@
  * https://github.com/inpsyde/google-tag-manager/
  */
 
-namespace VeeKay\StripeDonate;
-use VeeKay\StripeDonate\App\ConfigBuilder;
 
 // Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
@@ -21,102 +19,49 @@ if ( !function_exists( 'add_action' ) ) {
 	exit;
 }
 
-add_action('plugins_loaded', __NAMESPACE__.'\initialize');
+register_activation_hook( __FILE__, 'stripe_donate_activate' );
 
 /**
- * @wp-hook plugins_loaded
+ * Validate requirements on activation
  *
- * @throws \Throwable   When WP_DEBUG=TRUE exceptions will be thrown.
+ * Runs on plugin activation.
+ * Check if php min 5.6.0 if not deactivate the plugin.
+ *
+ * @since 3.1.1
+ *
+ * @return void
  */
+function stripe_donate_activate() {
+
+	$required_php_version = '5.6.0';
+	$correct_php_version  = version_compare( PHP_VERSION, $required_php_version, '>=' );
+
+	load_plugin_textdomain('stripe-donate');
+
+	if ( ! $correct_php_version ) {
+		deactivate_plugins( basename( __FILE__ ) );
+
+		wp_die(
+			'<p>' .
+			sprintf(
+			// translators: %1$s will replace with the PHP version of the client.
+				esc_attr__(
+					'This plugin can not be activated because it requires at least PHP version %1$s. ',
+					'stripe-donate'
+				),
+				$required_php_version
+			)
+			. '</p> <a href="' . admin_url( 'plugins.php' ) . '">'
+			. esc_attr__( 'back', 'stripe-donate' ) . '</a>'
+		);
+
+	}
+
+}
+
+add_action('plugins_loaded', 'initialize');
 
 function initialize()
 {
-    try {
-        load_plugin_textdomain( 'stripe-donate' );
 
-        if (! checkPluginRequirements()) {
-            return false;
-        }
-
-        (new StripeDonate())
-            ->set('config', ConfigBuilder::fromFile(__FILE__)->freeze());  
-        // (new GoogleTagManager())
-        //     ->set('config', ConfigBuilder::fromFile(__FILE__)->freeze())
-        //     ->register(new App\Provider\AssetProvider())
-        //     ->register(new App\Provider\FormProvider())
-        //     ->register(new App\Provider\DataLayerProvider())
-        //     ->register(new App\Provider\RendererProvider())
-        //     ->register(new App\Provider\SettingsProvider())
-        //     ->boot();
-    } catch (\Throwable $exception) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            throw $exception;
-        }
-
-        print($exception);
-
-        return false;
-    }
-
-    return true;
-}
-
-
-/**
- * @return bool
- */
-function checkPluginRequirements()
-{
-    $min_php_version = '7.2';
-    $current_php_version = phpversion();
-    if (! version_compare($current_php_version, $min_php_version, '>=')) {
-        adminNotice(
-            sprintf(
-            /* translators: %1$s is the min PHP-version, %2$s the current PHP-version */
-                __(
-                    'Stripe Donate requires PHP version %1$1s or higher. You are running version %2$2s.',
-                    'stripe-donate'
-                ),
-                $min_php_version,
-                $current_php_version
-            )
-        );
-
-        return false;
-    }
-
-    if (! class_exists(GoogleTagManager::class)) {
-        $autoloader = __DIR__.'/vendor/autoload.php';
-        if (! file_exists($autoloader)) {
-            adminNotice(
-                __(
-                    'Could not find a working autoloader for Stripe Donate.',
-                    'stripe-donate'
-                )
-            );
-
-            return false;
-        }
-
-        /** @noinspection PhpIncludeInspection */
-        require $autoloader;
-    }
-
-    return true;
-}
-
-/**
- * @param string $message
- */
-function adminNotice(string $message)
-{
-    add_action(
-        'admin_notices',
-        function () use ($message) {
-            printf(
-                '<div class="notice notice-error"><p>%1$s</p></div>',
-                esc_html($message)
-            );
-        }
-    );
 }
