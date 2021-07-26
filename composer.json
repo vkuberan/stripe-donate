@@ -1,0 +1,42 @@
+{
+    "name": "vkuberan/stripe-donate",
+    "description": "A Simple Wordpress donation plugin using Stripe as its payment processor.",
+    "type": "wordpress-plugin",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Velmurugan Kuberan",
+            "email": "vkuberan@gmail.com",
+            "homepage": "https://github.com/vkuberan"
+        }
+    ],
+    "support": {
+        "src": "https://github.com/vkuberan/stripe-donate/",
+        "issues": "https://github.com/vkuberan/stripe-donate/issues"
+    },
+    "require": {
+        "php": ">=7.2",
+        "psr/container": "~1.0",
+        "brain/nonces": "1.0.*",
+        "chrico/wp-fields": "~1.0",
+        "stripe/stripe-php": "7.91.0"
+    },
+    "require-dev": {
+        "php": ">=7.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+        "inpsyde/php-coding-standards": "1.0.0-RC.1",
+        "brain/monkey": "^2"
+    },
+    "autoload": {
+        "psr-4": {
+            "VeeKay\\StripeDonate\\": "src/"
+        }
+    },
+    "scripts": {
+        "cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "qa": [
+            "@cs",
+            "@tests:no-cov"
+        ]
+    }
+}
