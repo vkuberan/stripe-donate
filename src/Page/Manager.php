@@ -15,7 +15,7 @@ class Manager {
 	private $pages = [];
 
 	/**
-	 * Add a whole new menu for this plugin.
+	 * Add a new menu for this plugin.
 	 */
 	public function add_new_menu() {
 		add_menu_page(
