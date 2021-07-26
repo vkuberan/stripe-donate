@@ -12,6 +12,7 @@ class Manager {
 	/**
 	 * @var PageInterface[]
    * reference all the pages added to manager
+   * 
 	 */
 	private $pages = [];
 
