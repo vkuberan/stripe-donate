@@ -9,27 +9,25 @@ namespace VeeKay\StripeDonate\Page;
  * @package VeeKay\StripeDonate\Page
  */
 class Manager {
+  /**
+   * @var PageInterface[]
+   */
+  private $pages = [];
 
-	/**
-	 * @var PageInterface[]
-         * 
-	 */
-	private $pages = [];
-
-	/**
-	 * Add a new menu for this plugin.
-	 */
-	public function add_new_menu() {
-		add_menu_page(
-			'Stripe Donate', 
-			'Stripe Donate', 
-			'manage_options', 
-			'stripe-donate', 
-			[$this, 'display_page'],
-			'dashicons-admin-page',
-			10
-		);
-	}
+  /**
+   * Add a new menu for this plugin.
+   */
+  public function add_new_menu() {
+    add_menu_page(
+      'Stripe Donate', 
+      'Stripe Donate', 
+      'manage_options', 
+      'stripe-donate', 
+      [$this, 'display_page'],
+      'dashicons-admin-page',
+      10
+    );
+  }
 
 	public function display_page() {
 
