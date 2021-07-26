@@ -4,7 +4,6 @@ namespace VeeKay\StripeDonate\Page;
 
 /**
  * Class Manager
- *
  * @package VeeKay\StripeDonate\Page
  */
 class Manager {
