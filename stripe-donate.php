@@ -13,7 +13,7 @@
  */
 
 namespace VeeKay\StripeDonate;
-
+use VeeKay\StripeDonate\App\ConfigBuilder;
 
 // Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
@@ -38,18 +38,22 @@ function initialize()
             return false;
         }
 
-        (new GoogleTagManager())
-            ->set('config', ConfigBuilder::fromFile(__FILE__)->freeze())
-            ->register(new App\Provider\AssetProvider())
-            ->register(new App\Provider\FormProvider())
-            ->register(new App\Provider\DataLayerProvider())
-            ->register(new App\Provider\RendererProvider())
-            ->register(new App\Provider\SettingsProvider())
-            ->boot();
+        (new StripeDonate())
+            ->set('config', ConfigBuilder::fromFile(__FILE__)->freeze());  
+        // (new GoogleTagManager())
+        //     ->set('config', ConfigBuilder::fromFile(__FILE__)->freeze())
+        //     ->register(new App\Provider\AssetProvider())
+        //     ->register(new App\Provider\FormProvider())
+        //     ->register(new App\Provider\DataLayerProvider())
+        //     ->register(new App\Provider\RendererProvider())
+        //     ->register(new App\Provider\SettingsProvider())
+        //     ->boot();
     } catch (\Throwable $exception) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             throw $exception;
         }
+
+        print($exception);
 
         return false;
     }
