@@ -27,12 +27,19 @@ class StripeSettings extends AbstractPage implements PageInterface {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function get_menu_title() {
+
+		return esc_html__( 'Settings', 'stripe-donate' );
+	}
+
+	/**
 	 * Return the static slug string.
 	 *
 	 * @return string
 	 */
 	public function get_slug() {
-
 		return 'stripe-api';
 	}
 
@@ -40,6 +47,13 @@ class StripeSettings extends AbstractPage implements PageInterface {
 	 * Callback function for menu item
 	 */
 	public function render() {
+		$options = [
+			'is_test' => get_option( 'stripe_donation_is_test' ),
+			'test_pub_key' => get_option( 'stripe_donation_test_pub_key' ),
+			'test_secret_key' => get_option( 'stripe_donation_test_secret_key' ),
+			'live_pub_key' => get_option( 'stripe_donation_live_pub_key' ),
+			'live_secret_key' => get_option( 'stripe_donation_live_secret_key' )
+		];
 
 		require_once dirname(__DIR__) . '/templates/stripe-api.php';
 	}
@@ -56,21 +70,20 @@ class StripeSettings extends AbstractPage implements PageInterface {
 	 * {@inheritdoc}
 	 */
 	public function save() {
-		if ( ! wp_verify_nonce( $_POST[ $this->nonce_name ], $this->nonce_action ) ) {
-			wp_die( 'Cheating Uh?' );
-		}
+		
 
-		$is_test         = esc_url_raw( filter_input( INPUT_POST, 'test_stripe' ) );
-		$test_pub_key    = esc_url_raw( filter_input( INPUT_POST, 'test_publishable_key' ) );
+		$is_test         = esc_attr( filter_input( INPUT_POST, 'test_stripe' ) );
+		$test_pub_key    = esc_attr( filter_input( INPUT_POST, 'test_publishable_key' ) );
 		$test_secret_key = esc_attr( filter_input( INPUT_POST, 'test_secret_key' ) );
-		$live_pub_key    = esc_url_raw( filter_input( INPUT_POST, 'live_publishable_key' ) );
+		$live_pub_key    = esc_attr( filter_input( INPUT_POST, 'live_publishable_key' ) );
 		$live_secret_key = esc_attr( filter_input( INPUT_POST, 'live_secret_key' ) );
 
-		print($is_test . '<br />');
-		print($test_pub_key . '<br />');
-		print($test_secret_key . '<br />');
-		print($live_pub_key . '<br />');
-		print($live_secret_key . '<br />');
+		update_option( 'stripe_donation_is_test', $is_test );
+		update_option( 'stripe_donation_test_pub_key', $test_pub_key );
+		update_option( 'stripe_donation_test_secret_key', $test_secret_key );
+		update_option( 'stripe_donation_live_pub_key', $live_pub_key );
+		update_option( 'stripe_donation_live_secret_key', $live_secret_key );
+
 	}
 
 }

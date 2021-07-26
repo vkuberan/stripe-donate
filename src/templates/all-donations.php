@@ -10,7 +10,7 @@ if ( ! defined( 'STRIPE_DONATE_BASEDIR' ) ) {
 }
 ?>
 
-<h2><?php esc_html_e( 'Hey nice to have you here!', 'stripe-donate' ); ?></h2>
+<h2><?php esc_html_e( 'All Donations', 'stripe-donate' ); ?></h2>
 <p>
 	<?php esc_html_e( 'Stripe Donate is a simple plugin created for demo purpose.', 'stripe-donate' ); ?>
 </p>

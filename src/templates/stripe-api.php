@@ -23,7 +23,10 @@ if ( ! defined( 'STRIPE_DONATE_BASEDIR' ) ) {
 			</th>
 
 			<td>
-                <input type="checkbox" name="test_stripe" id="test_stripe">
+                <input type="checkbox"  
+					<?php if ($options['is_test'] == 'on') echo 'checked'; ?>
+					name="test_stripe" 
+					id="test_stripe">
             </td>
 		</tr>
 
@@ -34,7 +37,7 @@ if ( ! defined( 'STRIPE_DONATE_BASEDIR' ) ) {
 				</strong>
 			</th>
 
-			<td><input type="text" class="regular-text" name="test_publishable_key" id="test_publishable_key"></td>
+			<td><input type="text" value="<?php echo $options['test_pub_key'] ?>" class="regular-text" name="test_publishable_key" id="test_publishable_key"></td>
 		</tr>
 
 		<tr>
@@ -44,7 +47,7 @@ if ( ! defined( 'STRIPE_DONATE_BASEDIR' ) ) {
 				</strong>
 			</th>
 
-			<td><input type="text" class="regular-text" name="test_secret_key" id="test_secret_key"></td>
+			<td><input type="text" value="<?php echo $options['test_secret_key'] ?>" class="regular-text" name="test_secret_key" id="test_secret_key"></td>
 		</tr>
 
 		<tr>
@@ -54,7 +57,7 @@ if ( ! defined( 'STRIPE_DONATE_BASEDIR' ) ) {
 				</strong>
 			</th>
 
-			<td><input type="text" class="regular-text" name="live_publishable_key" id="live_publishable_key"></td>
+			<td><input type="text" value="<?php echo $options['live_pub_key'] ?>" class="regular-text" name="live_publishable_key" id="live_publishable_key"></td>
 		</tr>
 
 		<tr>
@@ -64,7 +67,7 @@ if ( ! defined( 'STRIPE_DONATE_BASEDIR' ) ) {
 				</strong>
 			</th>
 
-			<td><input type="text" class="regular-text" name="live_secret_key" id="live_secret_key"></td>
+			<td><input type="text" value="<?php echo $options['live_secret_key'] ?>" class="regular-text" name="live_secret_key" id="live_secret_key"></td>
 		</tr>
 		
 		</tbody>

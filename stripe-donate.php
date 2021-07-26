@@ -84,11 +84,11 @@ function initialize()
 
         $page_manager = new Page\Manager();
 
+		$page_manager->add_page( new Page\StripeDonations() );
+
         $page_manager->add_page( new Page\StripeSettings() );
 
         add_action( 'admin_menu', [ $page_manager, 'register_pages' ] );
         
-        add_action( 'admin_head', [ $page_manager, 'remove_submenu_pages' ] );
-    
 	}
 }

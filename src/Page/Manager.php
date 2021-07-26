@@ -14,11 +14,6 @@ class Manager {
 	 */
 	private $pages = [];
 
-
-	public function __construct() {
-		add_action( 'admin_menu', [$this, 'add_new_menu'] );
-	}
-
 	/**
 	 * Add a whole new menu for this plugin.
 	 */
@@ -70,7 +65,7 @@ class Manager {
 			return;
 		}
 
-		if ( ! check_admin_referer( 'replace_domain', 'insr_nonce' ) ) {
+		if ( ! check_admin_referer( 'stripe-donate-settings', 'stripe-donate' ) ) {
 			return;
 		}
 
@@ -85,6 +80,8 @@ class Manager {
 	 */
 	public function register_pages() {
 
+		$this->add_new_menu();
+
 		foreach ( $this->pages as $slug => $page ) {
 
 			/**
@@ -94,7 +91,7 @@ class Manager {
 			$cap = apply_filters( 'insr-capability', 'manage_options', $page );
 
 			add_submenu_page(
-				'tools.php',
+				'stripe-donate',
 				$page->get_page_title(),
 				$page->get_menu_title(),
 				$cap,
@@ -102,22 +99,9 @@ class Manager {
 				[ $this, 'render' ]
 			);
 		}
-	}
 
-	/**
-	 * Removes the plugins sub-menu pages from admin menu.
-	 *
-	 * @wp-hook admin_head
-	 */
-	public function remove_submenu_pages() {
-
-		$i = 0;
-		foreach ( $this->pages as $slug => $page ) {
-			if ( $i > 0 ) {
-				remove_submenu_page( 'tools.php', $slug );
-			}
-			$i ++;
-		}
+		global $submenu;
+		$submenu['stripe-donate'][0][0] = 'Home';
 	}
 
 	/**
@@ -125,36 +109,19 @@ class Manager {
 	 */
 	public function render() {
 
-		$url          = admin_url( 'tools.php' );
 		$current_page = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : key( $this->pages );
 
 		$output = '<div class="wrap">';
-		$output .= '<h1 id="title">' . esc_html__( 'Stripe Donate', 'stripe-donate' ) . '</h1>';
-		$output .= '<h2 class="nav-tab-wrapper">';
-
-		foreach ( $this->pages as $slug => $page ) :
-			$class  = $current_page === $slug ? 'nav-tab-active' : '';
-			$output .= sprintf(
-				'<a class="nav-tab %1$s" href="%2$s">%3$s</a>',
-				esc_attr( $class ),
-				add_query_arg( 'page', $slug, $url ),
-				$page->get_page_title()
-			);
-		endforeach;
-		unset( $page );
-
-		$output .= '</h2>';
-
+	
 		// Set the current page.
 		$page = $this->pages[ $current_page ];
 
-		echo $output;
-		echo '<div class="tab__content">';
+		echo '<h1 id="title">' . esc_html__( $page->get_page_title(), 'stripe-donate' ) . '</h1>';
 		$this->save();
 		$page->display_errors();
 		$page->render();
-		echo '</div>';
-		echo '</div>'; // wrap
+		echo '</div>'; 
+
 	}
 
 	/**
