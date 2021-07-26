@@ -13,13 +13,13 @@
  */
 
 define( 'STRIPE_DONATE_BASEDIR', plugin_dir_url( __FILE__ ) );
-
+  
 use VeeKay\StripeDonate\Page;
 
 // Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
-	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
-	exit;
+  echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
+  exit;
 }
 
 register_activation_hook( __FILE__, 'stripe_donate_activate' );
@@ -36,28 +36,27 @@ register_activation_hook( __FILE__, 'stripe_donate_activate' );
  */
 function stripe_donate_activate() {
 
-	$required_php_version = '5.6.0';
-	$correct_php_version  = version_compare( PHP_VERSION, $required_php_version, '>=' );
+  $required_php_version = '5.6.0';
+  $correct_php_version  = version_compare( PHP_VERSION, $required_php_version, '>=' );
 
-	load_plugin_textdomain('stripe-donate');
+  load_plugin_textdomain('stripe-donate');
 
-	if ( ! $correct_php_version ) {
-		deactivate_plugins( basename( __FILE__ ) );
+  if ( ! $correct_php_version ) {
+    deactivate_plugins( basename( __FILE__ ) );
 
-		wp_die(
-			'<p>' .
-			sprintf(
-			// translators: %1$s will replace with the PHP version of the client.
-				esc_attr__(
-					'This plugin can not be activated because it requires at least PHP version %1$s. ',
-					'stripe-donate'
-				),
-				$required_php_version
-			)
-			. '</p> <a href="' . admin_url( 'plugins.php' ) . '">'
-			. esc_attr__( 'back', 'stripe-donate' ) . '</a>'
+    wp_die(
+      '<p>' .
+        sprintf(
+          // translators: %1$s will replace with the PHP version of the client.
+          esc_attr__(
+            'This plugin can not be activated because it requires at least PHP version %1$s. ',
+            'stripe-donate'
+          ),
+          $required_php_version
+        )
+          . '</p> <a href="' . admin_url( 'plugins.php' ) . '">'
+		  . esc_attr__( 'back', 'stripe-donate' ) . '</a>'
 		);
-
 	}
 
 }
@@ -66,29 +65,29 @@ add_action('plugins_loaded', 'initialize');
 
 function initialize()
 {
-    load_plugin_textdomain('stripe-donate');
+  load_plugin_textdomain('stripe-donate');
     
-	$file     = __DIR__ . '/vendor/autoload.php';
+  $file     = __DIR__ . '/vendor/autoload.php';
 
-	/** @noinspection PhpIncludeInspection */
-	include_once $file;
+  /** @noinspection PhpIncludeInspection */
+  include_once $file;
 
-    //handle backend;
-	if ( is_admin() ) {
+  //handle backend;
+  if ( is_admin() ) {
 
-        $user_cap = apply_filters( 'stripe_donate_access_capability', 'manage_options' );
+    $user_cap = apply_filters( 'stripe_donate_access_capability', 'manage_options' );
 
-        if ( ! current_user_can( $user_cap ) || ! file_exists( $file ) ) {
-            return false;
-        }
+    if ( ! current_user_can( $user_cap ) || ! file_exists( $file ) ) {
+      return false;
+    }
 
-        $page_manager = new Page\Manager();
+    $page_manager = new Page\Manager();
 
-		$page_manager->add_page( new Page\StripeDonations() );
+    $page_manager->add_page( new Page\StripeDonations() );
 
-        $page_manager->add_page( new Page\StripeSettings() );
+    $page_manager->add_page( new Page\StripeSettings() );
 
-        add_action( 'admin_menu', [ $page_manager, 'register_pages' ] );
+    add_action( 'admin_menu', [ $page_manager, 'register_pages' ] );
         
-	}
+  }
 }
