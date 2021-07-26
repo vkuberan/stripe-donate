@@ -106,7 +106,7 @@ class Manager {
 	}
 
 	/**
-	 * Render all pages and handling save.
+	 * Render all pages and handling save too.
 	 */
 	public function render() {
 
